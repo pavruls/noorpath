@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">NoorPath</string>
+    <string name="tasbih_widget_description">হোম স্ক্রিনে তাসবিহ গণনা করুন</string>
+    <string name="tasbih_widget_label">তাসবিহ কাউন্টার</string>
+    <string name="prayer_widget_label">নামাজের সময়</string>
+    <string name="prayer_widget_description">পরবর্তী নামাজের সময় হোম স্ক্রিনে</string>
+    <string name="islamic_calendar_widget_label">ইসলামিক ক্যালেন্ডার</string>
+    <string name="islamic_calendar_widget_description">হিজরি তারিখ ও আসন্ন ইভেন্ট হোম স্ক্রিনে</string>
+    "client_id": "58153110966-5m4m23tjk0bg9tjffhpbvik6vs4htsah.apps.googleusercontent.com",
+</resources>

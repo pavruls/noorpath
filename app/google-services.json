@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "58153110966",
+    "project_id": "noorpath-app-f011c",
+    "storage_bucket": "noorpath-app-f011c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:58153110966:android:1b597a2cc97ec282448517",
+        "android_client_info": {
+          "package_name": "com.pavruls.noorpath"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "58153110966-m71f6gr89kmu2tjnlko1hq82j7tgcp0e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pavruls.noorpath",
+            "certificate_hash": "8103b30fbc8eed316e6079764a7dded2c275697e"
+          }
+        },
+        {
+          "client_id": "58153110966-5m4m23tjk0bg9tjffhpbvik6vs4htsah.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAW3GrXo3mPZ_hoUzjUNI5W8zw-ndMRlFo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "58153110966-5m4m23tjk0bg9tjffhpbvik6vs4htsah.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
