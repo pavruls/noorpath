@@ -1,0 +1,306 @@
+
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>কুরআন শরীফ - NoorPath</title>
+    <meta name="description" content="সম্পূর্ণ কুরআন শরীফ - বাংলা অনুবাদ ও আরবি টেক্সট সহ">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0A2E1F 0%, #1B5E20 100%);
+            color: white;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container { max-width: 900px; margin: 0 auto; }
+        .back-btn {
+            display: inline-block;
+            color: #D4AF37;
+            text-decoration: none;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            font-size: 32px;
+            color: #D4AF37;
+            margin-bottom: 8px;
+        }
+        .header p { color: #aaa; font-size: 14px; }
+        .surah-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 12px;
+        }
+        .surah-card {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 16px 18px;
+            background: rgba(255,255,255,0.06);
+            border-radius: 14px;
+            border: 1px solid rgba(212, 175, 55, 0.1);
+            cursor: pointer;
+            transition: 0.2s;
+            text-decoration: none;
+            color: white;
+        }
+        .surah-card:hover {
+            background: rgba(212, 175, 55, 0.1);
+            border-color: rgba(212, 175, 55, 0.3);
+            transform: translateY(-2px);
+        }
+        .surah-number {
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(212, 175, 55, 0.2);
+            border-radius: 50%;
+            color: #D4AF37;
+            font-weight: bold;
+            font-size: 15px;
+            flex-shrink: 0;
+        }
+        .surah-info { flex: 1; }
+        .surah-name-bn {
+            font-size: 16px;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 2px;
+        }
+        .surah-name-ar {
+            font-size: 14px;
+            color: #D4AF37;
+            font-family: 'Traditional Arabic', 'Arial', sans-serif;
+        }
+        .surah-meta {
+            font-size: 11px;
+            color: #888;
+            margin-top: 2px;
+        }
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
+            color: #D4AF37;
+            font-size: 16px;
+        }
+        .error {
+            text-align: center;
+            padding: 60px 20px;
+            color: #ff6b6b;
+            font-size: 15px;
+        }
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 13px;
+            color: #888;
+        }
+        .footer a { color: #D4AF37; text-decoration: none; }
+
+        /* Surah Detail View */
+        .surah-detail { display: none; }
+        .surah-detail.active { display: block; }
+        .surah-list.hidden { display: none; }
+        .detail-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(212, 175, 55, 0.1);
+            border-radius: 16px;
+        }
+        .detail-header h2 {
+            font-size: 26px;
+            color: #D4AF37;
+            margin-bottom: 6px;
+        }
+        .detail-header .arabic-title {
+            font-size: 22px;
+            color: white;
+            font-family: 'Traditional Arabic', 'Arial', sans-serif;
+            margin-bottom: 8px;
+        }
+        .detail-header .meta {
+            color: #aaa;
+            font-size: 13px;
+        }
+        .ayah-card {
+            padding: 20px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 14px;
+            margin-bottom: 14px;
+            border-left: 3px solid #D4AF37;
+        }
+        .ayah-number {
+            display: inline-block;
+            background: rgba(212, 175, 55, 0.2);
+            color: #D4AF37;
+            width: 32px;
+            height: 32px;
+            line-height: 32px;
+            text-align: center;
+            border-radius: 50%;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+        .ayah-arabic {
+            font-size: 26px;
+            line-height: 2.2;
+            color: #ffffff;
+            font-family: 'Traditional Arabic', 'Amiri', 'Arial', sans-serif;
+            text-align: right;
+            direction: rtl;
+            margin-bottom: 16px;
+        }
+        .ayah-translation {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #e0e0e0;
+            padding-top: 12px;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-btn">← হোমে ফিরে যান</a>
+
+        <!-- Surah List View -->
+        <div id="surahListView">
+            <div class="header">
+                <h1>📖 কুরআন শরীফ</h1>
+                <p>১১৪টি সূরা • আরবি ও বাংলা অনুবাদ</p>
+            </div>
+            <div id="surahList" class="surah-list">
+                <div class="loading">⏳ সূরা লিস্ট লোড হচ্ছে...</div>
+            </div>
+        </div>
+
+        <!-- Surah Detail View -->
+        <div id="surahDetailView" class="surah-detail">
+            <a href="#" class="back-btn" onclick="showSurahList(); return false;">← সূরা লিস্টে ফিরে যান</a>
+            <div id="surahDetail"></div>
+        </div>
+
+        <div class="footer">
+            © 2026 NoorPath • <a href="mailto:amara2023alam@gmail.com">যোগাযোগ</a>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'https://api.quran.com/api/v4';
+
+        // সূরার বাংলা নাম
+        const banglaNames = {
+            1: "আল-ফাতিহা", 2: "আল-বাকারা", 3: "আল-ইমরান", 4: "আন-নিসা",
+            5: "আল-মায়িদা", 6: "আল-আনআম", 7: "আল-আরাফ", 8: "আল-আনফাল",
+            9: "আত-তাওবা", 10: "ইউনুস", 11: "হুদ", 12: "ইউসুফ",
+            13: "আর-রাদ", 14: "ইব্রাহিম", 15: "আল-হিজর", 16: "আন-নাহল",
+            17: "আল-ইসরা", 18: "আল-কাহফ", 19: "মারইয়াম", 20: "ত্বা-হা",
+            21: "আল-আম্বিয়া", 22: "আল-হাজ্জ", 23: "আল-মুমিনুন", 24: "আন-নূর",
+            25: "আল-ফুরকান", 26: "আশ-শুআরা", 27: "আন-নামল", 28: "আল-কাসাস",
+            29: "আল-আনকাবুত", 30: "আর-রূম", 31: "লুকমান", 32: "আস-সাজদা",
+            33: "আল-আহযাব", 34: "সাবা", 35: "ফাতির", 36: "ইয়াসিন",
+            37: "আস-সাফফাত", 38: "সাদ", 39: "আয-যুমার", 40: "গাফির",
+            41: "ফুসসিলাত", 42: "আশ-শূরা", 43: "আয-যুখরুফ", 44: "আদ-দুখান",
+            45: "আল-জাসিয়া", 46: "আল-আহকাফ", 47: "মুহাম্মদ", 48: "আল-ফাতহ",
+            49: "আল-হুজুরাত", 50: "কাফ", 51: "আয-যারিয়াত", 52: "আত-তূর",
+            53: "আন-নাজম", 54: "আল-কামার", 55: "আর-রাহমান", 56: "আল-ওয়াকিয়া",
+            57: "আল-হাদিদ", 58: "আল-মুজাদালা", 59: "আল-হাশর", 60: "আল-মুমতাহিনা",
+            61: "আস-সাফ", 62: "আল-জুমুআ", 63: "আল-মুনাফিকুন", 64: "আত-তাগাবুন",
+            65: "আত-তালাক", 66: "আত-তাহরিম", 67: "আল-মুলক", 68: "আল-কলম",
+            69: "আল-হাক্কা", 70: "আল-মাআরিজ", 71: "নূহ", 72: "আল-জিন",
+            73: "আল-মুযযাম্মিল", 74: "আল-মুদ্দাসসির", 75: "আল-কিয়ামা", 76: "আল-ইনসান",
+            77: "আল-মুরসালাত", 78: "আন-নাবা", 79: "আন-নাযিয়াত", 80: "আবাসা",
+            81: "আত-তাকভীর", 82: "আল-ইনফিতার", 83: "আল-মুতাফফিফিন", 84: "আল-ইনশিকাক",
+            85: "আল-বুরূজ", 86: "আত-তারিক", 87: "আল-আলা", 88: "আল-গাশিয়া",
+            89: "আল-ফজর", 90: "আল-বালাদ", 91: "আশ-শামস", 92: "আল-লাইল",
+            93: "আদ-দুহা", 94: "আশ-শারহ", 95: "আত-তীন", 96: "আল-আলাক",
+            97: "আল-কাদর", 98: "আল-বাইয়িনা", 99: "আয-যিলযাল", 100: "আল-আদিয়াত",
+            101: "আল-কারিয়া", 102: "আত-তাকাসুর", 103: "আল-আসর", 104: "আল-হুমাযা",
+            105: "আল-ফীল", 106: "কুরাইশ", 107: "আল-মাউন", 108: "আল-কাউসার",
+            109: "আল-কাফিরুন", 110: "আন-নাসর", 111: "আল-লাহাব", 112: "আল-ইখলাস",
+            113: "আল-ফালাক", 114: "আন-নাস"
+        };
+
+        // সূরা লিস্ট লোড করা
+        async function loadSurahList() {
+            const listEl = document.getElementById('surahList');
+            try {
+                const response = await fetch(`${API_BASE}/chapters?language=bn`);
+                const data = await response.json();
+                
+                listEl.innerHTML = data.chapters.map(surah => `
+                    <a href="#" class="surah-card" onclick="loadSurah(${surah.id}); return false;">
+                        <div class="surah-number">${surah.id}</div>
+                        <div class="surah-info">
+                            <div class="surah-name-bn">${banglaNames[surah.id] || surah.name_simple}</div>
+                            <div class="surah-name-ar">${surah.name_arabic}</div>
+                            <div class="surah-meta">${surah.verses_count} আয়াত • ${surah.revelation_place === 'makkah' ? 'মাক্কী' : 'মাদানী'}</div>
+                        </div>
+                    </a>
+                `).join('');
+            } catch (error) {
+                listEl.innerHTML = `<div class="error">❌ সূরা লিস্ট লোড করা যায়নি: ${error.message}</div>`;
+            }
+        }
+
+        // নির্দিষ্ট সূরার আয়াত লোড করা
+        async function loadSurah(surahId) {
+            document.getElementById('surahListView').style.display = 'none';
+            document.getElementById('surahDetailView').classList.add('active');
+            const detailEl = document.getElementById('surahDetail');
+            detailEl.innerHTML = '<div class="loading">⏳ আয়াত লোড হচ্ছে...</div>';
+
+            try {
+                // সূরার তথ্য + বাংলা অনুবাদ (translation id = 161 for Bangla)
+                const [chapterRes, versesRes] = await Promise.all([
+                    fetch(`${API_BASE}/chapters/${surahId}?language=bn`),
+                    fetch(`${API_BASE}/verses/by_chapter/${surahId}?language=bn&words=false&translations=161&fields=text_uthmani`)
+                ]);
+
+                const chapter = (await chapterRes.json()).chapter;
+                const verses = (await versesRes.json()).verses;
+
+                detailEl.innerHTML = `
+                    <div class="detail-header">
+                        <h2>${banglaNames[surahId] || chapter.name_simple}</h2>
+                        <div class="arabic-title">${chapter.name_arabic}</div>
+                        <div class="meta">${chapter.verses_count} আয়াত • ${chapter.revelation_place === 'makkah' ? 'মাক্কী' : 'মাদানী'}</div>
+                    </div>
+                    ${verses.map(v => `
+                        <div class="ayah-card">
+                            <div class="ayah-number">${v.verse_number}</div>
+                            <div class="ayah-arabic">${v.text_uthmani}</div>
+                            <div class="ayah-translation">${v.translations[0]?.text?.replace(/<[^>]*>/g, '') || ''}</div>
+                        </div>
+                    `).join('')}
+                `;
+
+                window.scrollTo(0, 0);
+            } catch (error) {
+                detailEl.innerHTML = `<div class="error">❌ আয়াত লোড করা যায়নি: ${error.message}</div>`;
+            }
+        }
+
+        // সূরা লিস্টে ফিরে যাওয়া
+        function showSurahList() {
+            document.getElementById('surahDetailView').classList.remove('active');
+            document.getElementById('surahListView').style.display = 'block';
+            window.scrollTo(0, 0);
+        }
+
+        // পেজ লোড হলে সূরা লিস্ট দেখানো
+        loadSurahList();
+    </script>
+</body>
+</html>
