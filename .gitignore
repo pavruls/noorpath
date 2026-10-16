@@ -7,7 +7,6 @@ app/release/
 app/build/
 app/debug/
 /local.properties
-local.properties
 
 # Android Studio / IntelliJ
 .idea/
