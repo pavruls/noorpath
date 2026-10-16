@@ -1532,8 +1532,8 @@ object AppStrings {
 
     fun itikafContent(lang: String): String = when (lang) {
         LanguageManager.LANG_EN ->
-            "Itikaf in the mosque during the last ten days of Ramadan is Sunnah.\n\n" +
-                    "• Stay in the mosque with intention\n" +
+            "Itikaf in the mosque.kt during the last ten days of Ramadan is Sunnah.\n\n" +
+                    "• Stay in the mosque.kt with intention\n" +
                     "• Refrain from worldly matters\n" +
                     "• Engage in worship and Quran recitation\n" +
                     "• Stay awake at night in worship"
@@ -1949,7 +1949,7 @@ object AppStrings {
     }
 
     fun noMosquesFound(lang: String): String = when (lang) {
-        LanguageManager.LANG_EN -> "No mosque found within 3 km.\nPlease try another area."
+        LanguageManager.LANG_EN -> "No mosque.kt found within 3 km.\nPlease try another area."
         LanguageManager.LANG_AR -> "لم يتم العثور على مسجد في نطاق 3 كيلومترات.\nيرجى المحاولة في منطقة أخرى."
         else -> "৩ কিলোমিটারের মধ্যে কোনো মসজিদ পাওয়া যায়নি।\nঅনুগ্রহ করে অন্য এলাকায় চেষ্টা করুন।"
     }
@@ -2154,7 +2154,7 @@ object AppStrings {
     }
 
     fun navigateToMosqueLabel(lang: String): String = when (lang) {
-        LanguageManager.LANG_EN -> "Navigate to mosque"
+        LanguageManager.LANG_EN -> "Navigate to mosque.kt"
         LanguageManager.LANG_AR -> "الانتقال إلى المسجد"
         else -> "মসজিদে যাওয়ার পথ"
     }

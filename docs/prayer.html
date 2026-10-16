@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>নামাজের সময়সূচি - NoorPath</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0A2E1F 0%, #1B5E20 100%);
+            color: white;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container { max-width: 600px; margin: 0 auto; }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            font-size: 32px;
+            color: #D4AF37;
+            margin-bottom: 8px;
+        }
+        .header p { color: #aaa; font-size: 14px; }
+        .back-btn {
+            display: inline-block;
+            color: #D4AF37;
+            text-decoration: none;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        .search-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        .search-box input {
+            flex: 1;
+            min-width: 200px;
+            padding: 14px 18px;
+            border-radius: 12px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            background: rgba(255,255,255,0.08);
+            color: white;
+            font-size: 16px;
+            outline: none;
+        }
+        .search-box input::placeholder { color: #888; }
+        .search-box input:focus {
+            border-color: #D4AF37;
+        }
+        .search-box button {
+            padding: 14px 24px;
+            background: #D4AF37;
+            color: #0A2E1F;
+            border: none;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .search-box button:hover {
+            background: #e6c34b;
+            transform: translateY(-2px);
+        }
+        .date-info {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #D4AF37;
+            font-size: 15px;
+        }
+        .prayer-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .prayer-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 22px;
+            background: rgba(255,255,255,0.06);
+            border-radius: 16px;
+            border: 1px solid rgba(212, 175, 55, 0.1);
+            transition: 0.2s;
+        }
+        .prayer-card:hover {
+            background: rgba(212, 175, 55, 0.1);
+            border-color: rgba(212, 175, 55, 0.3);
+        }
+        .prayer-name {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        .prayer-icon { font-size: 24px; }
+        .prayer-time {
+            font-size: 22px;
+            font-weight: bold;
+            color: #D4AF37;
+            font-family: 'Courier New', monospace;
+        }
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #D4AF37;
+            font-size: 16px;
+        }
+        .error {
+            text-align: center;
+            padding: 40px;
+            color: #ff6b6b;
+            font-size: 15px;
+        }
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 13px;
+            color: #888;
+        }
+        .footer a { color: #D4AF37; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-btn">← হোমে ফিরে যান</a>
+
+        <div class="header">
+            <h1>🕌 নামাজের সময়সূচি</h1>
+            <p>আপনার শহরের নাম লিখুন</p>
+        </div>
+
+        <div class="search-box">
+            <input type="text" id="cityInput" placeholder="শহরের নাম (যেমন: Dhaka)" value="Dhaka">
+            <button onclick="getPrayerTimes()">🔍 খুঁজুন</button>
+        </div>
+
+        <div id="dateInfo" class="date-info"></div>
+        <div id="prayerList" class="prayer-list">
+            <div class="loading">⏳ সময়সূচি লোড হচ্ছে...</div>
+        </div>
+
+        <div class="footer">
+            © 2026 NoorPath • <a href="mailto:amara2023alam@gmail.com">যোগাযোগ</a>
+        </div>
+    </div>
+
+    <script>
+        // বাংলাদেশের জন্য method=1 (University of Islamic Sciences, Karachi) [citation:7]
+        const METHOD = 1;
+        const COUNTRY = 'Bangladesh';
+
+        async function getPrayerTimes() {
+            const city = document.getElementById('cityInput').value.trim();
+            if (!city) {
+                alert('শহরের নাম লিখুন');
+                return;
+            }
+
+            const prayerList = document.getElementById('prayerList');
+            const dateInfo = document.getElementById('dateInfo');
+            
+            prayerList.innerHTML = '<div class="loading">⏳ সময়সূচি লোড হচ্ছে...</div>';
+            dateInfo.textContent = '';
+
+            try {
+                // Aladhan API - timingsByCity endpoint [citation:2][citation:7]
+                const url = `https://api.aladhan.com/v1/timingsByCity?city=${encodeURIComponent(city)}&country=${COUNTRY}&method=${METHOD}`;
+                const response = await fetch(url);
+                const data = await response.json();
+
+                if (data.code !== 200) {
+                    throw new Error('ডেটা পাওয়া যায়নি');
+                }
+
+                const timings = data.data.timings;
+                const date = data.data.date;
+
+                // তারিখ দেখানো
+                dateInfo.textContent = `📅 ${date.readable} | ${date.hijri.day} ${date.hijri.month.en} ${date.hijri.year} হিজরি`;
+
+                // নামাজের তালিকা
+                const prayers = [
+                    { name: 'ফজর', key: 'Fajr', icon: '🌅' },
+                    { name: 'সূর্যোদয়', key: 'Sunrise', icon: '☀️' },
+                    { name: 'যোহর', key: 'Dhuhr', icon: '🌞' },
+                    { name: 'আসর', key: 'Asr', icon: '🌤️' },
+                    { name: 'মাগরিব', key: 'Maghrib', icon: '🌇' },
+                    { name: 'ইশা', key: 'Isha', icon: '🌙' }
+                ];
+
+                prayerList.innerHTML = prayers.map(p => `
+                    <div class="prayer-card">
+                        <div class="prayer-name">
+                            <span class="prayer-icon">${p.icon}</span>
+                            <span>${p.name}</span>
+                        </div>
+                        <div class="prayer-time">${timings[p.key]}</div>
+                    </div>
+                `).join('');
+
+            } catch (error) {
+                prayerList.innerHTML = `<div class="error">❌ সমস্যা হয়েছে: ${error.message}<br>শহরের নাম ঠিক আছে কি না দেখুন।</div>`;
+            }
+        }
+
+        // পেজ লোড হলে ডিফল্ট Dhaka এর সময় দেখানো
+        getPrayerTimes();
+    </script>
+</body>
+</html>

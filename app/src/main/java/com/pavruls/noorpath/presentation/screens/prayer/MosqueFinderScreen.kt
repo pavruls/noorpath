@@ -386,7 +386,7 @@ fun MosqueItemCard(
         ) {
             Icon(
                 imageVector = Icons.Default.Place,
-                contentDescription = null,   // decorative — পাশে mosque name আছে
+                contentDescription = null,   // decorative — পাশে mosque.kt name আছে
                 tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier
                     .size(40.dp)
