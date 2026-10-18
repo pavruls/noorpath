@@ -28,7 +28,39 @@
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
-    <url><loc>https://pavruls.github.io/noorpath/tasbih.html</loc><lastmod>2026-10-17</lastmod><priority>0.8</priority></url>
-<url><loc>https://pavruls.github.io/noorpath/dua.html</loc><lastmod>2026-10-17</lastmod><priority>0.8</priority></url>
-<url><loc>https://pavruls.github.io/noorpath/names.html</loc><lastmod>2026-10-17</lastmod><priority>0.8</priority></url>
+    <!-- দৈনন্দিন দুআ -->
+    <url>
+        <loc>https://pavruls.github.io/noorpath/dua.html</loc>
+        <lastmod>2026-10-17</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <!-- ডিজিটাল তাসবিহ -->
+    <url>
+        <loc>https://pavruls.github.io/noorpath/tasbih.html</loc>
+        <lastmod>2026-10-17</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <!-- আল্লাহর ৯৯ নাম -->
+    <url>
+        <loc>https://pavruls.github.io/noorpath/names.html</loc>
+        <lastmod>2026-10-17</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <!-- যাকাত ক্যালকুলেটর -->
+    <url>
+        <loc>https://pavruls.github.io/noorpath/zakat.html</loc>
+        <lastmod>2026-10-17</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <!-- রমজান ক্যালেন্ডার -->
+    <url>
+        <loc>https://pavruls.github.io/noorpath/ramadan.html</loc>
+        <lastmod>2026-10-17</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
 </urlset>
