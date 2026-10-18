@@ -213,10 +213,10 @@
         </div>
     </div>
 
-    <!-- অডিও প্লেয়ার (লুকানো থাকবে, শুধু প্লে করলে দেখা যাবে) -->
+    <!-- অডিও প্লেয়ার -->
     <div id="audioPlayerContainer" class="audio-container">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-            <p style="color: #D4AF37; font-size: 14px; margin:0;">🎧 অডিও তেলাওয়াত</p>
+            <p id="audioTitle" style="color: #D4AF37; font-size: 14px; margin:0;">🎧 অডিও তেলাওয়াত</p>
             <button onclick="closeAudio()" style="background:transparent; border:none; color:#fff; font-size:16px; cursor:pointer;">✖</button>
         </div>
         <audio id="quranAudio" controls></audio>
@@ -258,6 +258,10 @@
             113: "আল-ফালাক", 114: "আন-নাস"
         };
 
+        // গ্লোবাল ভেরিয়েবল
+        let currentPlaylist = []; // বর্তমান সূরার সব অডিও লিংক
+        let currentTrackIndex = 0; // বর্তমানে কোন আয়াত বাজছে
+
         // সূরা লিস্ট লোড করা
         async function loadSurahList() {
             const listEl = document.getElementById('surahList');
@@ -287,9 +291,10 @@
             const detailEl = document.getElementById('surahDetail');
             detailEl.innerHTML = '<div class="loading">⏳ আয়াত লোড হচ্ছে...</div>';
 
-            // অডিও প্লেয়ার লুকিয়ে ফেলা
-            document.getElementById('audioPlayerContainer').style.display = 'none';
-            document.getElementById('quranAudio').pause();
+            // অডিও প্লেয়ার এবং প্লেলিস্ট রিসেট
+            closeAudio();
+            currentPlaylist = [];
+            currentTrackIndex = 0;
 
             try {
                 const [chapterRes, versesRes] = await Promise.all([
@@ -300,8 +305,13 @@
                 const chapter = (await chapterRes.json()).chapter;
                 const verses = (await versesRes.json()).verses;
 
-                // সূরার নাম ৩ ডিজিটে ফরম্যাট করা (যেমন: ১ -> 001)
                 const surahPadded = String(surahId).padStart(3, '0');
+
+                // প্লেলিস্ট তৈরি করা
+                currentPlaylist = verses.map(v => {
+                    const ayahPadded = String(v.verse_number).padStart(3, '0');
+                    return `https://everyayah.com/data/Alafasy_128kbps/${surahPadded}${ayahPadded}.mp3`;
+                });
 
                 detailEl.innerHTML = `
                     <div class="detail-header">
@@ -309,17 +319,13 @@
                         <div class="arabic-title">${chapter.name_arabic}</div>
                         <div class="meta">${chapter.verses_count} আয়াত • ${chapter.revelation_place === 'makkah' ? 'মাক্কী' : 'মাদানী'}</div>
                     </div>
-                    ${verses.map(v => {
-                        const ayahPadded = String(v.verse_number).padStart(3, '0');
-                        // EveryAyah এর অডিও লিংক (মিশারি রশিদ আল-আফাসি)
-                        const audioUrl = `https://everyayah.com/data/Alafasy_128kbps/${surahPadded}${ayahPadded}.mp3`;
-                        
+                    ${verses.map((v, index) => {
                         return `
                         <div class="ayah-card">
                             <div class="ayah-number">${v.verse_number}</div>
                             <div class="ayah-arabic">${v.text_uthmani}</div>
                             <div class="ayah-translation">${v.translations[0]?.text?.replace(/<[^>]*>/g, '') || ''}</div>
-                            <button onclick="playAudio('${audioUrl}')" style="margin-top: 15px; background: #D4AF37; color: #0A2E1F; border: none; padding: 8px 20px; border-radius: 25px; cursor: pointer; font-weight: bold; font-size: 14px; display: flex; align-items: center; gap: 5px;">
+                            <button onclick="playAudio(${index})" style="margin-top: 15px; background: #D4AF37; color: #0A2E1F; border: none; padding: 8px 20px; border-radius: 25px; cursor: pointer; font-weight: bold; font-size: 14px; display: flex; align-items: center; gap: 5px;">
                                 ▶️ প্লে করুন
                             </button>
                         </div>
@@ -333,15 +339,30 @@
             }
         }
 
-        // অডিও প্লে করার ফাংশন
-        function playAudio(url) {
+        // অডিও প্লে করার ফাংশন (ইনডেক্স দিয়ে)
+        function playAudio(index) {
             const playerContainer = document.getElementById('audioPlayerContainer');
             const audio = document.getElementById('quranAudio');
+            const title = document.getElementById('audioTitle');
             
+            currentTrackIndex = index;
             playerContainer.style.display = 'block';
-            audio.src = url;
+            audio.src = currentPlaylist[currentTrackIndex];
             audio.play();
+            
+            title.innerText = `🎧 আয়াত ${currentTrackIndex + 1} চলছে...`;
         }
+
+        // অডিও শেষ হলে পরের অডিও চালানোর ইভেন্ট (অটো-প্লে)
+        document.getElementById('quranAudio').addEventListener('ended', () => {
+            if (currentTrackIndex < currentPlaylist.length - 1) {
+                playAudio(currentTrackIndex + 1);
+            } else {
+                document.getElementById('audioTitle').innerText = "🎧 তেলাওয়াত সম্পন্ন হয়েছে";
+                // সব শেষ হলে প্লেয়ার বন্ধ করতে চাইলে নিচের লাইনটি আনকমেন্ট করুন
+                // closeAudio(); 
+            }
+        });
 
         // অডিও বন্ধ করার ফাংশন
         function closeAudio() {
@@ -349,12 +370,14 @@
             const audio = document.getElementById('quranAudio');
             audio.pause();
             playerContainer.style.display = 'none';
+            currentTrackIndex = 0;
         }
 
         // সূরা লিস্টে ফিরে যাওয়া
         function showSurahList() {
             document.getElementById('surahDetailView').classList.remove('active');
             document.getElementById('surahListView').style.display = 'block';
+            closeAudio(); // ফিরে যাওয়ার সময় অডিও বন্ধ হবে
             window.scrollTo(0, 0);
         }
 
