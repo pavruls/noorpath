@@ -128,7 +128,7 @@
     </style>
 </head>
 <body>
-        <div class="container">
+    <div class="container">
         <a href="index.html" class="back-btn">← হোমে ফিরে যান</a>
 
         <div class="header">
@@ -136,7 +136,6 @@
             <p>শহরের নাম লিখুন অথবা আপনার লোকেশন ব্যবহার করুন</p>
         </div>
 
-        <!-- সার্চ বক্স এবং লোকেশন বাটন -->
         <div class="search-box">
             <input type="text" id="cityInput" placeholder="শহরের নাম (যেমন: Dhaka)" value="Dhaka">
             <button onclick="getPrayerTimesByCity()">🔍 খুঁজুন</button>
@@ -154,7 +153,7 @@
     </div>
 
     <script>
-        const METHOD = 1; // University of Islamic Sciences, Karachi (উপমহাদেশের জন্য সেরা)
+        const METHOD = 1; // University of Islamic Sciences, Karachi
         const COUNTRY = 'Bangladesh';
 
         // ১. শহরের নাম দিয়ে খোঁজা
@@ -165,7 +164,11 @@
                 return;
             }
 
-            const url = `https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lng}&method=${METHOD}&timeformat=12`;
+            // এখানে timeformat=12 যোগ করা হয়েছে
+            const url = `https://api.aladhan.com/v1/timingsByCity?city=${encodeURIComponent(city)}&country=${COUNTRY}&method=${METHOD}&timeformat=12`;
+            
+            // url তৈরি করে ফাংশনটি কল করা হলো
+            fetchAndRender(url, city);
         }
 
         // ২. জিপিএস লোকেশন দিয়ে খোঁজা
@@ -182,7 +185,9 @@
                     const lat = position.coords.latitude;
                     const lng = position.coords.longitude;
                     
-                    const url = `https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lng}&method=${METHOD}`;
+                    // এখানেও timeformat=12 যোগ করা হয়েছে
+                    const url = `https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lng}&method=${METHOD}&timeformat=12`;
+                    
                     fetchAndRender(url, "আপনার এলাকা");
                 },
                 (error) => {
