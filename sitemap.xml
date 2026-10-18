@@ -1,20 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <!-- হোম পেজ -->
     <url>
         <loc>https://pavruls.github.io/noorpath/</loc>
-        <lastmod>2026-10-16</lastmod>
+        <lastmod>2026-10-17</lastmod>
         <changefreq>weekly</changefreq>
         <priority>1.0</priority>
     </url>
-    <url>
-    <loc>https://pavruls.github.io/noorpath/quran.html</loc>
-    <lastmod>2026-10-16</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-</url>
+    <!-- নামাজের সময়সূচি -->
     <url>
         <loc>https://pavruls.github.io/noorpath/prayer.html</loc>
-        <lastmod>2026-10-16</lastmod>
+        <lastmod>2026-10-17</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <!-- কুরআন শরীফ -->
+    <url>
+        <loc>https://pavruls.github.io/noorpath/quran.html</loc>
+        <lastmod>2026-10-17</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <!-- হাদিস শরীফ -->
+    <url>
+        <loc>https://pavruls.github.io/noorpath/hadith.html</loc>
+        <lastmod>2026-10-17</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
