@@ -152,7 +152,7 @@
         </div>
     </div>
 
-    <script>
+       <script>
         const METHOD = 1; // University of Islamic Sciences, Karachi
         const COUNTRY = 'Bangladesh';
 
@@ -167,7 +167,6 @@
             // এখানে timeformat=12 যোগ করা হয়েছে
             const url = `https://api.aladhan.com/v1/timingsByCity?city=${encodeURIComponent(city)}&country=${COUNTRY}&method=${METHOD}&timeformat=12`;
             
-            // url তৈরি করে ফাংশনটি কল করা হলো
             fetchAndRender(url, city);
         }
 
