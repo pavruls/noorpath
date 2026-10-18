@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-site-verification" content="TrE1bHzp1xhCXb5e37OtVHGQhPx1yKEz0K1nngYkJAE" />
     <title>NoorPath - ইসলামিক শিক্ষা অ্যাপ</title>
-    <meta name="description" content="শিশুদের জন্য ইসলামিক শিক্ষা অ্যাপ - কুরআন, হাদিস, দুআ, নামাজ শিক্ষা">
+    <meta name="description" content="শিশুদের এবং বড়দের জন্য ইসলামিক শিক্ষা অ্যাপ - কুরআন, হাদিস, দুআ, নামাজ শিক্ষা">
 
     <!-- Open Graph Tags -->
     <meta property="og:title" content="NoorPath - ইসলামিক শিক্ষা অ্যাপ" />
@@ -14,126 +14,179 @@
     <meta property="og:type" content="website" />
 
     <style>
+        :root {
+            --primary: #0A2E1F;
+            --secondary: #1B5E20;
+            --gold: #D4AF37;
+            --gold-hover: #e6c34b;
+            --text-light: #f4f4f4;
+            --text-muted: #aaa;
+        }
+        
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0A2E1F 0%, #1B5E20 100%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             color: white;
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 20px;
-        }
-        .container { max-width: 700px; }
-        .logo { font-size: 70px; margin-bottom: 10px; }
-        h1 {
-            font-size: 42px;
-            color: #D4AF37;
-            margin-bottom: 8px;
-            font-family: 'Traditional Arabic', 'Arial', sans-serif;
-        }
-        h2 {
-            font-size: 26px;
-            color: #ffffff;
-            margin-bottom: 20px;
-            font-weight: 600;
-        }
-        p {
-            font-size: 16px;
             line-height: 1.6;
-            color: #e0e0e0;
-            margin-bottom: 30px;
+            overflow-x: hidden;
         }
-        .buttons {
-            display: flex;
-            gap: 12px;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-bottom: 30px;
+
+        /* Navbar */
+        .navbar {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 40px; background: rgba(0,0,0,0.2); backdrop-filter: blur(10px);
+            position: sticky; top: 0; z-index: 100;
         }
+        .nav-brand { font-size: 24px; font-weight: bold; color: var(--gold); text-decoration: none; display: flex; align-items: center; gap: 10px;}
+        .nav-links a { color: white; text-decoration: none; margin-left: 20px; font-weight: 500; transition: 0.3s; }
+        .nav-links a:hover { color: var(--gold); }
+
+        /* Hero Section */
+        .hero {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 80px 40px; max-width: 1200px; margin: 0 auto; gap: 40px;
+        }
+        .hero-text { flex: 1; }
+        .hero-text h1 {
+            font-size: 52px; color: var(--gold); margin-bottom: 20px; line-height: 1.2;
+        }
+        .hero-text p {
+            font-size: 18px; color: var(--text-light); margin-bottom: 30px;
+        }
+        .hero-buttons { display: flex; gap: 15px; flex-wrap: wrap; }
         .btn {
-            display: inline-block;
-            padding: 12px 24px;
-            background: #D4AF37;
-            color: #0A2E1F;
-            text-decoration: none;
-            border-radius: 30px;
-            font-weight: bold;
-            font-size: 15px;
-            transition: all 0.2s;
+            padding: 14px 28px; border-radius: 30px; font-weight: bold; font-size: 16px;
+            text-decoration: none; transition: 0.3s; text-align: center;
         }
-        .btn:hover {
-            transform: translateY(-2px);
-            background: #e6c34b;
-            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.3);
+        .btn-primary { background: var(--gold); color: var(--primary); }
+        .btn-primary:hover { background: var(--gold-hover); transform: translateY(-3px); box-shadow: 0 10px 20px rgba(212, 175, 55, 0.3); }
+        .btn-outline { border: 2px solid var(--gold); color: var(--gold); }
+        .btn-outline:hover { background: var(--gold); color: var(--primary); transform: translateY(-3px); }
+
+        .hero-image { flex: 1; text-align: center; }
+        .hero-image .mockup {
+            width: 280px; height: 550px; background: #000; border-radius: 40px;
+            border: 8px solid #333; margin: 0 auto; display: flex; align-items: center;
+            justify-content: center; box-shadow: 0 20px 50px rgba(0,0,0,0.5); position: relative; overflow: hidden;
         }
-        .btn-outline {
-            background: transparent;
-            border: 2px solid #D4AF37;
-            color: #D4AF37;
+        .mockup-screen { width: 100%; height: 100%; background: linear-gradient(180deg, #0A2E1F 0%, #1B5E20 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .mockup-logo { font-size: 60px; margin-bottom: 10px; }
+        .mockup-title { color: var(--gold); font-size: 24px; font-weight: bold; }
+
+        /* Features Section */
+        .features { padding: 80px 20px; background: rgba(0,0,0,0.2); }
+        .section-title { text-align: center; font-size: 36px; color: var(--gold); margin-bottom: 50px; }
+        .feature-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px; max-width: 1200px; margin: 0 auto;
         }
-        .btn-outline:hover { background: #D4AF37; color: #0A2E1F; }
-        .social {
-            display: flex;
-            gap: 24px;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-top: 20px;
+        .feature-card {
+            background: rgba(255,255,255,0.05); padding: 30px; border-radius: 20px;
+            text-align: center; transition: 0.3s; border: 1px solid rgba(255,255,255,0.1); text-decoration: none; color: white;
+            display: flex; flex-direction: column; align-items: center;
         }
-        .social a {
-            color: #D4AF37;
-            text-decoration: none;
-            font-size: 16px;
-            padding: 8px 16px;
-            border-radius: 20px;
-            background: rgba(212, 175, 55, 0.1);
-            transition: all 0.2s;
+        .feature-card:hover { transform: translateY(-10px); background: rgba(212, 175, 55, 0.1); border-color: var(--gold); }
+        .feature-icon { font-size: 40px; margin-bottom: 15px; }
+        .feature-card h3 { font-size: 20px; margin-bottom: 10px; color: var(--gold); }
+        .feature-card p { font-size: 14px; color: var(--text-muted); }
+
+        /* Footer */
+        .footer { text-align: center; padding: 40px 20px; background: #05180f; }
+        .footer p { color: var(--text-muted); margin-bottom: 10px; }
+        .social-links { display: flex; justify-content: center; gap: 20px; margin-top: 15px; }
+        .social-links a { color: var(--gold); text-decoration: none; font-size: 15px; padding: 8px 16px; border-radius: 20px; background: rgba(212, 175, 55, 0.1); transition: 0.3s; }
+        .social-links a:hover { background: rgba(212, 175, 55, 0.25); }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero { flex-direction: column; text-align: center; padding: 40px 20px; }
+            .hero-buttons { justify-content: center; }
+            .nav-links { display: none; } /* মোবাইলে মেনু লুকানো হলো */
+            .hero-text h1 { font-size: 36px; }
         }
-        .social a:hover { background: rgba(212, 175, 55, 0.25); }
-        .footer {
-            margin-top: 40px;
-            font-size: 13px;
-            color: #888;
-            line-height: 1.8;
-        }
-        .footer a { color: #D4AF37; text-decoration: none; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="logo">🕌</div>
-        <h1>نُور</h1>
-        <h2>নূরপাঠ • NoorPath</h2>
-        <p>
-            শিশুদের জন্য ইসলামিক শিক্ষা অ্যাপ। কুরআন, হাদিস, দুআ, নামাজ শিক্ষা, 
-            নবীদের গল্প, তাসবিহ, যাকাত ক্যালকুলেটর এবং আরও অনেক কিছু — 
-            সম্পূর্ণ বাংলা, ইংরেজি ও আরবি ভাষায়।
-        </p>
 
-        <!-- আপডেট করা বাটন সেকশন -->
-        <div class="buttons">
-            <a href="prayer.html" class="btn">🕌 নামাজের সময়সূচি</a>
-            <a href="quran.html" class="btn">📖 কুরআন শরীফ</a>
-            <a href="hadith.html" class="btn">📚 হাদিস শরীফ</a>
-            <a href="dua.html" class="btn">🤲 দৈনন্দিন দুআ</a>
-            <a href="tasbih.html" class="btn">📿 ডিজিটাল তাসবিহ</a>
-            <a href="names.html" class="btn">✨ আল্লাহর ৯৯ নাম</a>
-            
-            <a href="#" class="btn btn-outline">📱 শীঘ্রই Play Store-এ</a>
-            <a href="https://github.com/pavruls/noorpath" class="btn btn-outline">📂 GitHub</a>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="index.html" class="nav-brand">🕌 NoorPath</a>
+        <div class="nav-links">
+            <a href="#features">ফিচারসমূহ</a>
+            <a href="https://github.com/pavruls/noorpath" target="_blank">GitHub</a>
         </div>
+    </nav>
 
-        <div class="social">
-            <a href="https://www.facebook.com/pavruls9730">📘 Facebook</a>
-            <a href="https://www.instagram.com/pavruls">📷 Instagram</a>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-text">
+            <h1>শিশুদের জন্য সেরা ইসলামিক শিক্ষা অ্যাপ</h1>
+            <p>কুরআন, হাদিস, দুআ, নামাজ শিক্ষা, নবীদের গল্প এবং আরও অনেক কিছু — সম্পূর্ণ বাংলা, ইংরেজি ও আরবি ভাষায়। ঘরে বসেই আপনার সন্তানকে ইসলামের সঠিক শিক্ষা দিন।</p>
+            <div class="hero-buttons">
+                <a href="prayer.html" class="btn btn-primary">🚀 অ্যাপটি ব্যবহার করুন</a>
+                <a href="https://github.com/pavruls/noorpath" class="btn btn-outline">📂 সোর্স কোড</a>
+            </div>
         </div>
+        <div class="hero-image">
+            <div class="mockup">
+                <div class="mockup-screen">
+                    <div class="mockup-logo">🕌</div>
+                    <div class="mockup-title">নূরপাঠ</div>
+                    <p style="color: #aaa; font-size: 14px; margin-top: 10px;">NoorPath</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-        <div class="footer">
-            © 2026 NoorPath • Made with ❤️ for the Ummah<br>
-            Contact: <a href="mailto:amara2023alam@gmail.com">amara2023alam@gmail.com</a>
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <h2 class="section-title">✨ আমাদের ফিচারসমূহ</h2>
+        <div class="feature-grid">
+            <a href="quran.html" class="feature-card">
+                <div class="feature-icon">📖</div>
+                <h3>কুরআন শরীফ</h3>
+                <p>১১৪টি সূরা আরবি ও বাংলা অনুবাদসহ</p>
+            </a>
+            <a href="hadith.html" class="feature-card">
+                <div class="feature-icon">📚</div>
+                <h3>হাদিস শরীফ</h3>
+                <p>বুখারী, মুসলিমসহ প্রধান হাদিস গ্রন্থ</p>
+            </a>
+            <a href="prayer.html" class="feature-card">
+                <div class="feature-icon">🕌</div>
+                <h3>নামাজের সময়</h3>
+                <p>সঠিক সময়সূচি এবং আজানের সময়</p>
+            </a>
+            <a href="dua.html" class="feature-card">
+                <div class="feature-icon">🤲</div>
+                <h3>দৈনন্দিন দুআ</h3>
+                <p>সকাল, সন্ধ্যা, ঘুম ও খাবারের দুআ</p>
+            </a>
+            <a href="tasbih.html" class="feature-card">
+                <div class="feature-icon">📿</div>
+                <h3>ডিজিটাল তাসবিহ</h3>
+                <p>সুবহানাল্লাহ, আলহামদুলিল্লাহ কাউন্টার</p>
+            </a>
+            <a href="names.html" class="feature-card">
+                <div class="feature-icon">✨</div>
+                <h3>আল্লাহর ৯৯ নাম</h3>
+                <p>আসমাউল হুসনা অর্থ ও ফজিলতসহ</p>
+            </a>
         </div>
-    </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© 2026 NoorPath • Made with ❤️ for the Ummah</p>
+        <p>Contact: <a href="mailto:amara2023alam@gmail.com" style="color: var(--gold);">amara2023alam@gmail.com</a></p>
+        <div class="social-links">
+            <a href="https://www.facebook.com/pavruls9730" target="_blank">📘 Facebook</a>
+            <a href="https://www.instagram.com/pavruls" target="_blank">📷 Instagram</a>
+        </div>
+    </footer>
+
 </body>
 </html>
