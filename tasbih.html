@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ডিজিটাল তাসবিহ - NoorPath</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0A2E1F 0%, #1B5E20 100%);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .back-btn { position: absolute; top: 20px; left: 20px; color: #D4AF37; text-decoration: none; }
+        .zikr-selector {
+            display: flex; gap: 10px; margin-bottom: 40px; flex-wrap: wrap; justify-content: center;
+        }
+        .zikr-btn {
+            padding: 8px 16px; border-radius: 20px; border: 1px solid #D4AF37;
+            background: transparent; color: #D4AF37; cursor: pointer; transition: 0.2s;
+        }
+        .zikr-btn.active { background: #D4AF37; color: #0A2E1F; font-weight: bold; }
+        .counter-container {
+            width: 250px; height: 250px; border-radius: 50%;
+            border: 8px solid rgba(212, 175, 55, 0.3);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            cursor: pointer; transition: transform 0.1s; user-select: none;
+        }
+        .counter-container:active { transform: scale(0.95); }
+        .count { font-size: 80px; font-weight: bold; color: #D4AF37; }
+        .target-text { font-size: 18px; color: #aaa; }
+        .controls { margin-top: 40px; display: flex; gap: 15px; }
+        .btn {
+            padding: 12px 24px; border-radius: 10px; border: none;
+            background: rgba(255,255,255,0.1); color: white; cursor: pointer; font-size: 16px;
+        }
+        .btn:hover { background: rgba(255,255,255,0.2); }
+        .reset-btn { background: #ff6b6b; color: white; }
+        .reset-btn:hover { background: #ff5252; }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-btn">← হোমে ফিরে যান</a>
+    
+    <div class="zikr-selector" id="zikrSelector">
+        <button class="zikr-btn active" data-target="33" data-zikr="سُبْحَانَ اللَّهِ">সুবহানাল্লাহ (৩৩)</button>
+        <button class="zikr-btn" data-target="33" data-zikr="الْحَمْدُ لِلَّهِ">আলহামদুলিল্লাহ (৩৩)</button>
+        <button class="zikr-btn" data-target="34" data-zikr="اللَّهُ أَكْبَرُ">আল্লাহু আকবার (৩৪)</button>
+    </div>
+
+    <div class="counter-container" onclick="increment()">
+        <div class="count" id="countDisplay">0</div>
+        <div class="target-text" id="zikrText">সুবহানাল্লাহ</div>
+    </div>
+
+    <div class="controls">
+        <button class="btn reset-btn" onclick="resetCounter()">🔄 রিসেট</button>
+    </div>
+
+    <script>
+        let count = 0;
+        let target = 33;
+        let currentZikr = "সুবহানাল্লাহ";
+        let totalCount = 0;
+
+        function increment() {
+            count++;
+            if (count > target) {
+                count = 1;
+                totalCount += target;
+            }
+            document.getElementById('countDisplay').innerText = count;
+            // Vibrate if supported
+            if (navigator.vibrate) navigator.vibrate(50);
+        }
+
+        function resetCounter() {
+            count = 0;
+            document.getElementById('countDisplay').innerText = count;
+        }
+
+        document.getElementById('zikrSelector').addEventListener('click', (e) => {
+            if (!e.target.classList.contains('zikr-btn')) return;
+            document.querySelectorAll('.zikr-btn').forEach(b => b.classList.remove('active'));
+            e.target.classList.add('active');
+            target = parseInt(e.target.dataset.target);
+            currentZikr = e.target.innerText.split(' (')[0];
+            document.getElementById('zikrText').innerText = currentZikr;
+            resetCounter();
+        });
+    </script>
+</body>
+</html>
