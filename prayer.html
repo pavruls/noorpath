@@ -165,8 +165,7 @@
                 return;
             }
 
-            const url = `https://api.aladhan.com/v1/timingsByCity?city=${encodeURIComponent(city)}&country=${COUNTRY}&method=${METHOD}`;
-            fetchAndRender(url, city);
+            const url = `https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lng}&method=${METHOD}&timeformat=12`;
         }
 
         // ২. জিপিএস লোকেশন দিয়ে খোঁজা
