@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>হাদিস শরীফ - NoorPath</title>
+    <meta name="description" content="সহিহ বুখারী, মুসলিমসহ প্রধান হাদিস গ্রন্থের বাংলা অনুবাদ">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0A2E1F 0%, #1B5E20 100%);
+            color: white;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container { max-width: 900px; margin: 0 auto; }
+        .back-btn {
+            display: inline-block;
+            color: #D4AF37;
+            text-decoration: none;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            font-size: 32px;
+            color: #D4AF37;
+            margin-bottom: 8px;
+        }
+        .header p { color: #aaa; font-size: 14px; }
+        .book-selector {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+        .book-btn {
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 25px;
+            color: #D4AF37;
+            cursor: pointer;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+        .book-btn:hover, .book-btn.active {
+            background: rgba(212, 175, 55, 0.2);
+            border-color: #D4AF37;
+        }
+        .hadith-list { display: flex; flex-direction: column; gap: 14px; }
+        .hadith-card {
+            padding: 22px;
+            background: rgba(255,255,255,0.06);
+            border-radius: 16px;
+            border-left: 3px solid #D4AF37;
+        }
+        .hadith-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+            font-size: 13px;
+            color: #D4AF37;
+        }
+        .hadith-number {
+            background: rgba(212, 175, 55, 0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+        .hadith-narrator { color: #aaa; }
+        .hadith-text {
+            font-size: 16px;
+            line-height: 1.9;
+            color: #e0e0e0;
+            margin-bottom: 12px;
+        }
+        .hadith-arabic {
+            font-size: 22px;
+            line-height: 2;
+            color: #D4AF37;
+            font-family: 'Traditional Arabic', 'Amiri', 'Arial', sans-serif;
+            text-align: right;
+            direction: rtl;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+        }
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
+            color: #D4AF37;
+            font-size: 16px;
+        }
+        .error {
+            text-align: center;
+            padding: 60px 20px;
+            color: #ff6b6b;
+            font-size: 15px;
+        }
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 30px;
+        }
+        .pagination button {
+            padding: 10px 24px;
+            background: #D4AF37;
+            color: #0A2E1F;
+            border: none;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .pagination button:hover { background: #e6c34b; }
+        .pagination button:disabled {
+            background: #555;
+            color: #999;
+            cursor: not-allowed;
+        }
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 13px;
+            color: #888;
+        }
+        .footer a { color: #D4AF37; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-btn">← হোমে ফিরে যান</a>
+
+        <div class="header">
+            <h1>📚 হাদিস শরীফ</h1>
+            <p>বাংলা অনুবাদসহ প্রধান হাদিস গ্রন্থ</p>
+        </div>
+
+        <div class="book-selector" id="bookSelector">
+            <button class="book-btn active" data-book="bukhari">সহিহ বুখারী</button>
+            <button class="book-btn" data-book="muslim">সহিহ মুসলিম</button>
+            <button class="book-btn" data-book="tirmidhi">জামি আত-তিরমিজি</button>
+            <button class="book-btn" data-book="abudawud">সুনান আবু দাউদ</button>
+        </div>
+
+        <div id="hadithList" class="hadith-list">
+            <div class="loading">⏳ হাদিস লোড হচ্ছে...</div>
+        </div>
+
+        <div class="pagination" id="pagination" style="display:none;">
+            <button id="prevBtn" onclick="changePage(-1)">← পূর্ববর্তী</button>
+            <button id="nextBtn" onclick="changePage(1)">পরবর্তী →</button>
+        </div>
+
+        <div class="footer">
+            © 2026 NoorPath • <a href="mailto:amara2023alam@gmail.com">যোগাযোগ</a>
+        </div>
+    </div>
+
+    <script>
+        const CDN_BASE = 'https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions';
+        const BANGLA_BOOKS = {
+            'bukhari': 'ben-bukhari',
+            'muslim': 'ben-muslim',
+            'tirmidhi': 'ben-tirmidhi',
+            'abudawud': 'ben-abudawud'
+        };
+
+        let currentBook = 'bukhari';
+        let allHadiths = [];
+        let currentPage = 0;
+        const PAGE_SIZE = 20;
+
+        async function loadHadiths(bookKey) {
+            const listEl = document.getElementById('hadithList');
+            const paginationEl = document.getElementById('pagination');
+            listEl.innerHTML = '<div class="loading">⏳ হাদিস লোড হচ্ছে...</div>';
+            paginationEl.style.display = 'none';
+
+            try {
+                const edition = BANGLA_BOOKS[bookKey];
+                const url = `${CDN_BASE}/${edition}.min.json`;
+                const response = await fetch(url);
+                
+                if (!response.ok) throw new Error('ডেটা পাওয়া যায়নি');
+                
+                const data = await response.json();
+                allHadiths = data.hadiths || [];
+                currentPage = 0;
+                
+                if (allHadiths.length === 0) {
+                    listEl.innerHTML = '<div class="error">❌ কোনো হাদিস পাওয়া যায়নি</div>';
+                    return;
+                }
+
+                renderPage();
+                paginationEl.style.display = 'flex';
+            } catch (error) {
+                listEl.innerHTML = `<div class="error">❌ হাদিস লোড করা যায়নি: ${error.message}<br>ইন্টারনেট সংযোগ চেক করুন।</div>`;
+            }
+        }
+
+        function renderPage() {
+            const listEl = document.getElementById('hadithList');
+            const start = currentPage * PAGE_SIZE;
+            const end = start + PAGE_SIZE;
+            const pageHadiths = allHadiths.slice(start, end);
+
+            listEl.innerHTML = pageHadiths.map((h, idx) => {
+                const number = h.hadithnumber || (start + idx + 1);
+                const text = h.text || '';
+                const narrator = h.grades?.[0]?.grade || '';
+                
+                return `
+                    <div class="hadith-card">
+                        <div class="hadith-meta">
+                            <span class="hadith-number">হাদিস #${number}</span>
+                            <span class="hadith-narrator">${narrator ? 'বর্ণনা: ' + narrator : ''}</span>
+                        </div>
+                        <div class="hadith-text">${text}</div>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('prevBtn').disabled = currentPage === 0;
+            document.getElementById('nextBtn').disabled = end >= allHadiths.length;
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function changePage(delta) {
+            currentPage += delta;
+            renderPage();
+        }
+
+        // Book selector click handler
+        document.getElementById('bookSelector').addEventListener('click', (e) => {
+            if (!e.target.classList.contains('book-btn')) return;
+            
+            document.querySelectorAll('.book-btn').forEach(b => b.classList.remove('active'));
+            e.target.classList.add('active');
+            
+            currentBook = e.target.dataset.book;
+            loadHadiths(currentBook);
+        });
+
+        // Initial load
+        loadHadiths('bukhari');
+    </script>
+</body>
+</html>
