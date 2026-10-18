@@ -7,6 +7,10 @@
     <title>NoorPath - ইসলামিক শিক্ষা অ্যাপ</title>
     <meta name="description" content="শিশুদের এবং বড়দের জন্য ইসলামিক শিক্ষা অ্যাপ - কুরআন, হাদিস, দুআ, নামাজ শিক্ষা">
 
+    <!-- PWA Tags -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#D4AF37">
+
     <!-- Open Graph Tags -->
     <meta property="og:title" content="NoorPath - ইসলামিক শিক্ষা অ্যাপ" />
     <meta property="og:description" content="শিশুদের জন্য ইসলামিক শিক্ষা অ্যাপ - কুরআন, হাদিস, দুআ, নামাজ শিক্ষা" />
@@ -104,7 +108,7 @@
         @media (max-width: 768px) {
             .hero { flex-direction: column; text-align: center; padding: 40px 20px; }
             .hero-buttons { justify-content: center; }
-            .nav-links { display: none; } /* মোবাইলে মেনু লুকানো হলো */
+            .nav-links { display: none; }
             .hero-text h1 { font-size: 36px; }
         }
     </style>
@@ -120,7 +124,28 @@
         </div>
     </nav>
 
-        <!-- Features Section -->
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-text">
+            <h1>শিশুদের জন্য সেরা ইসলামিক শিক্ষা অ্যাপ</h1>
+            <p>কুরআন, হাদিস, দুআ, নামাজ শিক্ষা, নবীদের গল্প এবং আরও অনেক কিছু — সম্পূর্ণ বাংলা, ইংরেজি ও আরবি ভাষায়। ঘরে বসেই আপনার সন্তানকে ইসলামের সঠিক শিক্ষা দিন।</p>
+            <div class="hero-buttons">
+                <a href="prayer.html" class="btn btn-primary">🚀 অ্যাপটি ব্যবহার করুন</a>
+                <a href="https://github.com/pavruls/noorpath" class="btn btn-outline">📂 সোর্স কোড</a>
+            </div>
+        </div>
+        <div class="hero-image">
+            <div class="mockup">
+                <div class="mockup-screen">
+                    <div class="mockup-logo">🕌</div>
+                    <div class="mockup-title">নূরপাঠ</div>
+                    <p style="color: #aaa; font-size: 14px; margin-top: 10px;">NoorPath</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
     <section class="features" id="features">
         <h2 class="section-title">✨ আমাদের ফিচারসমূহ</h2>
         <div class="feature-grid">
@@ -140,8 +165,6 @@
                 <h3>নামাজের সময়</h3>
                 <p>সঠিক সময়সূচি এবং আজানের সময়</p>
             </a>
-            
-            <!-- নতুন যোগ করা ফিচার -->
             <a href="dua.html" class="feature-card">
                 <div class="feature-icon">🤲</div>
                 <h3>দৈনন্দিন দুআ</h3>
@@ -157,16 +180,10 @@
                 <h3>আল্লাহর ৯৯ নাম</h3>
                 <p>আসমাউল হুসনা অর্থ ও ফজিলতসহ</p>
             </a>
-            
             <a href="zakat.html" class="feature-card">
                 <div class="feature-icon">💰</div>
                 <h3>যাকাত ক্যালকুলেটর</h3>
                 <p>আপনার সম্পদের সঠিক যাকাত হিসাব করুন</p>
-            </a>
-            <a href="prophets.html" class="feature-card">
-                <div class="feature-icon">📜</div>
-                <h3>নবীদের কাহিনী</h3>
-                <p>কুরআনে বর্ণিত নবী ও রাসূলদের জীবনী</p>
             </a>
             <a href="ramadan.html" class="feature-card">
                 <div class="feature-icon">🌙</div>
@@ -176,6 +193,31 @@
 
         </div>
     </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© 2026 NoorPath • Made with ❤️ for the Ummah</p>
+        <p>Contact: <a href="mailto:amara2023alam@gmail.com" style="color: var(--gold);">amara2023alam@gmail.com</a></p>
+        <div class="social-links">
+            <a href="https://www.facebook.com/pavruls9730" target="_blank">📘 Facebook</a>
+            <a href="https://www.instagram.com/pavruls" target="_blank">📷 Instagram</a>
+        </div>
+    </footer>
+
+    <!-- PWA Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then(registration => {
+                        console.log('Service Worker registered with scope:', registration.scope);
+                    })
+                    .catch(error => {
+                        console.log('Service Worker registration failed:', error);
+                    });
+            });
+        }
+    </script>
 
 </body>
 </html>
