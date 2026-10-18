@@ -128,17 +128,19 @@
     </style>
 </head>
 <body>
-    <div class="container">
+        <div class="container">
         <a href="index.html" class="back-btn">← হোমে ফিরে যান</a>
 
         <div class="header">
             <h1>🕌 নামাজের সময়সূচি</h1>
-            <p>আপনার শহরের নাম লিখুন</p>
+            <p>শহরের নাম লিখুন অথবা আপনার লোকেশন ব্যবহার করুন</p>
         </div>
 
+        <!-- সার্চ বক্স এবং লোকেশন বাটন -->
         <div class="search-box">
             <input type="text" id="cityInput" placeholder="শহরের নাম (যেমন: Dhaka)" value="Dhaka">
-            <button onclick="getPrayerTimes()">🔍 খুঁজুন</button>
+            <button onclick="getPrayerTimesByCity()">🔍 খুঁজুন</button>
+            <button onclick="getPrayerTimesByLocation()" style="background: #4CAF50; color: white;">📍 আমার লোকেশন</button>
         </div>
 
         <div id="dateInfo" class="date-info"></div>
@@ -152,17 +154,46 @@
     </div>
 
     <script>
-        // বাংলাদেশের জন্য method=1 (University of Islamic Sciences, Karachi) [citation:7]
-        const METHOD = 1;
+        const METHOD = 1; // University of Islamic Sciences, Karachi (উপমহাদেশের জন্য সেরা)
         const COUNTRY = 'Bangladesh';
 
-        async function getPrayerTimes() {
+        // ১. শহরের নাম দিয়ে খোঁজা
+        async function getPrayerTimesByCity() {
             const city = document.getElementById('cityInput').value.trim();
             if (!city) {
                 alert('শহরের নাম লিখুন');
                 return;
             }
 
+            const url = `https://api.aladhan.com/v1/timingsByCity?city=${encodeURIComponent(city)}&country=${COUNTRY}&method=${METHOD}`;
+            fetchAndRender(url, city);
+        }
+
+        // ২. জিপিএস লোকেশন দিয়ে খোঁজা
+        function getPrayerTimesByLocation() {
+            if (!navigator.geolocation) {
+                alert("আপনার ব্রাউজার লোকেশন সাপোর্ট করে না।");
+                return;
+            }
+
+            document.getElementById('prayerList').innerHTML = '<div class="loading">📍 লোকেশন খোঁজা হচ্ছে...</div>';
+            
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+                    
+                    const url = `https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lng}&method=${METHOD}`;
+                    fetchAndRender(url, "আপনার এলাকা");
+                },
+                (error) => {
+                    document.getElementById('prayerList').innerHTML = `<div class="error">❌ লোকেশন পাওয়া যায়নি। অনুগ্রহ করে লোকেশন পারমিশন দিন।</div>`;
+                }
+            );
+        }
+
+        // কমন ফাংশন: API থেকে ডেটা এনে দেখানো
+        async function fetchAndRender(url, locationName) {
             const prayerList = document.getElementById('prayerList');
             const dateInfo = document.getElementById('dateInfo');
             
@@ -170,22 +201,16 @@
             dateInfo.textContent = '';
 
             try {
-                // Aladhan API - timingsByCity endpoint [citation:2][citation:7]
-                const url = `https://api.aladhan.com/v1/timingsByCity?city=${encodeURIComponent(city)}&country=${COUNTRY}&method=${METHOD}`;
                 const response = await fetch(url);
                 const data = await response.json();
 
-                if (data.code !== 200) {
-                    throw new Error('ডেটা পাওয়া যায়নি');
-                }
+                if (data.code !== 200) throw new Error('ডেটা পাওয়া যায়নি');
 
                 const timings = data.data.timings;
                 const date = data.data.date;
 
-                // তারিখ দেখানো
-                dateInfo.textContent = `📅 ${date.readable} | ${date.hijri.day} ${date.hijri.month.en} ${date.hijri.year} হিজরি`;
+                dateInfo.textContent = `📅 ${date.readable} | ${date.hijri.day} ${date.hijri.month.en} ${date.hijri.year} হিজরি (${locationName})`;
 
-                // নামাজের তালিকা
                 const prayers = [
                     { name: 'ফজর', key: 'Fajr', icon: '🌅' },
                     { name: 'সূর্যোদয়', key: 'Sunrise', icon: '☀️' },
@@ -206,12 +231,12 @@
                 `).join('');
 
             } catch (error) {
-                prayerList.innerHTML = `<div class="error">❌ সমস্যা হয়েছে: ${error.message}<br>শহরের নাম ঠিক আছে কি না দেখুন।</div>`;
+                prayerList.innerHTML = `<div class="error">❌ সমস্যা হয়েছে: ${error.message}</div>`;
             }
         }
 
         // পেজ লোড হলে ডিফল্ট Dhaka এর সময় দেখানো
-        getPrayerTimes();
+        getPrayerTimesByCity();
     </script>
 </body>
 </html>
