@@ -76,11 +76,7 @@
     </div>
 
     <script>
-        // ==========================================
-        // ⚠️ মেথড পরিবর্তন করে আপনার অ্যাপের সাথে মিলান
-        // ১ = Karachi (18°), ২ = ISNA (15°), ৩ = MWL (18°/17°)
-        // ৪ = Makkah, ৫ = Egypt
-        // ==========================================
+        // আপনার অ্যাপের সাথে মিলানোর জন্য মেথড (১, ২, ৩, ৪, ৫)
         const METHOD = 2; 
         const COUNTRY = 'Bangladesh';
 
@@ -89,8 +85,7 @@
             const city = document.getElementById('cityInput').value.trim();
             if (!city) { alert('শহরের নাম লিখুন'); return; }
 
-            // &timeformat=12 যোগ করা হয়েছে ১২ ঘণ্টার জন্য
-            const url = `https://api.aladhan.com/v1/timingsByCity?city=${encodeURIComponent(city)}&country=${COUNTRY}&method=${METHOD}&timeformat=12`;
+            const url = `https://api.aladhan.com/v1/timingsByCity?city=${encodeURIComponent(city)}&country=${COUNTRY}&method=${METHOD}`;
             fetchAndRender(url, city);
         }
 
@@ -104,7 +99,7 @@
                 (position) => {
                     const lat = position.coords.latitude;
                     const lng = position.coords.longitude;
-                    const url = `https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lng}&method=${METHOD}&timeformat=12`;
+                    const url = `https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lng}&method=${METHOD}`;
                     fetchAndRender(url, "আপনার এলাকা");
                 },
                 (error) => {
@@ -113,7 +108,17 @@
             );
         }
 
-        // কমন ফাংশন: API থেকে ডেটা এনে দেখানো
+        // ৩. ২৪ ঘণ্টার সময়কে ১২ ঘণ্টায় (AM/PM) রূপান্তর করার ফাংশন
+        function formatTime(time24) {
+            if (!time24) return '';
+            let [hours, minutes] = time24.split(':');
+            hours = parseInt(hours, 10);
+            let suffix = hours >= 12 ? 'PM' : 'AM';
+            hours = (hours % 12) || 12; // 0 কে 12 বানাবে
+            return `${hours}:${minutes} ${suffix}`;
+        }
+
+        // ৪. কমন ফাংশন: API থেকে ডেটা এনে দেখানো
         async function fetchAndRender(url, locationName) {
             const prayerList = document.getElementById('prayerList');
             const dateInfo = document.getElementById('dateInfo');
@@ -147,7 +152,8 @@
                             <span class="prayer-icon">${p.icon}</span>
                             <span>${p.name}</span>
                         </div>
-                        <div class="prayer-time">${timings[p.key]}</div>
+                        <!-- এখানে আমাদের নিজের বানানো formatTime ফাংশনটি ব্যবহার করা হয়েছে -->
+                        <div class="prayer-time">${formatTime(timings[p.key])}</div>
                     </div>
                 `).join('');
 
