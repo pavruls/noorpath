@@ -108,10 +108,14 @@
             );
         }
 
-        // ৩. ২৪ ঘণ্টার সময়কে ১২ ঘণ্টায় (AM/PM) রূপান্তর করার ফাংশন
+        // ২৪ ঘণ্টার সময়কে ১২ ঘণ্টায় (AM/PM) রূপান্তর করার ফাংশন
         function formatTime(time24) {
             if (!time24) return '';
-            let [hours, minutes] = time24.split(':');
+            
+            // সময়ের সাথে যদি (BDT) বা (EST) লেখা থাকে, তা বাদ দেওয়া
+            let cleanTime = time24.split(' ')[0]; 
+            
+            let [hours, minutes] = cleanTime.split(':');
             hours = parseInt(hours, 10);
             let suffix = hours >= 12 ? 'PM' : 'AM';
             hours = (hours % 12) || 12; // 0 কে 12 বানাবে
