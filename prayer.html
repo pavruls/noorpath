@@ -14,116 +14,39 @@
             padding: 20px;
         }
         .container { max-width: 600px; margin: 0 auto; }
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .header h1 {
-            font-size: 32px;
-            color: #D4AF37;
-            margin-bottom: 8px;
-        }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { font-size: 32px; color: #D4AF37; margin-bottom: 8px; }
         .header p { color: #aaa; font-size: 14px; }
-        .back-btn {
-            display: inline-block;
-            color: #D4AF37;
-            text-decoration: none;
-            font-size: 14px;
-            margin-bottom: 20px;
-        }
-        .search-box {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-        }
+        .back-btn { display: inline-block; color: #D4AF37; text-decoration: none; font-size: 14px; margin-bottom: 20px; }
+        
+        .search-box { display: flex; gap: 10px; margin-bottom: 30px; flex-wrap: wrap; }
         .search-box input {
-            flex: 1;
-            min-width: 200px;
-            padding: 14px 18px;
-            border-radius: 12px;
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            background: rgba(255,255,255,0.08);
-            color: white;
-            font-size: 16px;
-            outline: none;
-        }
-        .search-box input::placeholder { color: #888; }
-        .search-box input:focus {
-            border-color: #D4AF37;
+            flex: 1; min-width: 200px; padding: 14px 18px; border-radius: 12px;
+            border: 1px solid rgba(212, 175, 55, 0.3); background: rgba(255,255,255,0.08);
+            color: white; font-size: 16px; outline: none;
         }
         .search-box button {
-            padding: 14px 24px;
-            background: #D4AF37;
-            color: #0A2E1F;
-            border: none;
-            border-radius: 12px;
-            font-weight: bold;
-            font-size: 16px;
-            cursor: pointer;
-            transition: 0.2s;
+            padding: 14px 24px; background: #D4AF37; color: #0A2E1F;
+            border: none; border-radius: 12px; font-weight: bold; font-size: 16px;
+            cursor: pointer; transition: 0.2s;
         }
-        .search-box button:hover {
-            background: #e6c34b;
-            transform: translateY(-2px);
-        }
-        .date-info {
-            text-align: center;
-            margin-bottom: 20px;
-            color: #D4AF37;
-            font-size: 15px;
-        }
-        .prayer-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
+        .search-box button:hover { background: #e6c34b; transform: translateY(-2px); }
+        
+        .date-info { text-align: center; margin-bottom: 20px; color: #D4AF37; font-size: 15px; }
+        .prayer-list { display: flex; flex-direction: column; gap: 12px; }
         .prayer-card {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 18px 22px;
-            background: rgba(255,255,255,0.06);
-            border-radius: 16px;
-            border: 1px solid rgba(212, 175, 55, 0.1);
-            transition: 0.2s;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 18px 22px; background: rgba(255,255,255,0.06); border-radius: 16px;
+            border: 1px solid rgba(212, 175, 55, 0.1); transition: 0.2s;
         }
-        .prayer-card:hover {
-            background: rgba(212, 175, 55, 0.1);
-            border-color: rgba(212, 175, 55, 0.3);
-        }
-        .prayer-name {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 18px;
-            font-weight: 600;
-        }
+        .prayer-card:hover { background: rgba(212, 175, 55, 0.1); border-color: rgba(212, 175, 55, 0.3); }
+        .prayer-name { display: flex; align-items: center; gap: 12px; font-size: 18px; font-weight: 600; }
         .prayer-icon { font-size: 24px; }
-        .prayer-time {
-            font-size: 22px;
-            font-weight: bold;
-            color: #D4AF37;
-            font-family: 'Courier New', monospace;
-        }
-        .loading {
-            text-align: center;
-            padding: 40px;
-            color: #D4AF37;
-            font-size: 16px;
-        }
-        .error {
-            text-align: center;
-            padding: 40px;
-            color: #ff6b6b;
-            font-size: 15px;
-        }
-        .footer {
-            margin-top: 40px;
-            text-align: center;
-            font-size: 13px;
-            color: #888;
-        }
+        .prayer-time { font-size: 22px; font-weight: bold; color: #D4AF37; font-family: 'Courier New', monospace; }
+        
+        .loading { text-align: center; padding: 40px; color: #D4AF37; font-size: 16px; }
+        .error { text-align: center; padding: 40px; color: #ff6b6b; font-size: 15px; }
+        .footer { margin-top: 40px; text-align: center; font-size: 13px; color: #888; }
         .footer a { color: #D4AF37; text-decoration: none; }
     </style>
 </head>
@@ -152,30 +75,28 @@
         </div>
     </div>
 
-       <script>
-        const METHOD = 1; // University of Islamic Sciences, Karachi
+    <script>
+        // ==========================================
+        // ⚠️ মেথড পরিবর্তন করে আপনার অ্যাপের সাথে মিলান
+        // ১ = Karachi (18°), ২ = ISNA (15°), ৩ = MWL (18°/17°)
+        // ৪ = Makkah, ৫ = Egypt
+        // ==========================================
+        const METHOD = 2; 
         const COUNTRY = 'Bangladesh';
 
         // ১. শহরের নাম দিয়ে খোঁজা
         async function getPrayerTimesByCity() {
             const city = document.getElementById('cityInput').value.trim();
-            if (!city) {
-                alert('শহরের নাম লিখুন');
-                return;
-            }
+            if (!city) { alert('শহরের নাম লিখুন'); return; }
 
-            // এখানে timeformat=12 যোগ করা হয়েছে
+            // &timeformat=12 যোগ করা হয়েছে ১২ ঘণ্টার জন্য
             const url = `https://api.aladhan.com/v1/timingsByCity?city=${encodeURIComponent(city)}&country=${COUNTRY}&method=${METHOD}&timeformat=12`;
-            
             fetchAndRender(url, city);
         }
 
         // ২. জিপিএস লোকেশন দিয়ে খোঁজা
         function getPrayerTimesByLocation() {
-            if (!navigator.geolocation) {
-                alert("আপনার ব্রাউজার লোকেশন সাপোর্ট করে না।");
-                return;
-            }
+            if (!navigator.geolocation) { alert("আপনার ব্রাউজার লোকেশন সাপোর্ট করে না।"); return; }
 
             document.getElementById('prayerList').innerHTML = '<div class="loading">📍 লোকেশন খোঁজা হচ্ছে...</div>';
             
@@ -183,14 +104,11 @@
                 (position) => {
                     const lat = position.coords.latitude;
                     const lng = position.coords.longitude;
-                    
-                    // এখানেও timeformat=12 যোগ করা হয়েছে
                     const url = `https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lng}&method=${METHOD}&timeformat=12`;
-                    
                     fetchAndRender(url, "আপনার এলাকা");
                 },
                 (error) => {
-                    document.getElementById('prayerList').innerHTML = `<div class="error">❌ লোকেশন পাওয়া যায়নি। অনুগ্রহ করে লোকেশন পারমিশন দিন।</div>`;
+                    document.getElementById('prayerList').innerHTML = `<div class="error">❌ লোকেশন পাওয়া যায়নি। লোকেশন পারমিশন দিন।</div>`;
                 }
             );
         }
