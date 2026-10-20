@@ -56,11 +56,12 @@
 
         <div class="header">
             <h1>🕌 নামাজের সময়সূচি</h1>
-            <p>শহরের নাম লিখুন অথবা আপনার লোকেশন ব্যবহার করুন</p>
+            <p>আপনার লোকেশন ব্যবহার করুন অথবা শহরের নাম লিখুন</p>
         </div>
 
         <div class="search-box">
-            <input type="text" id="cityInput" placeholder="শহরের নাম (যেমন: Dhaka)" value="Dhaka">
+            <!-- এখান থেকে value="Dhaka" মুছে ফেলা হয়েছে -->
+            <input type="text" id="cityInput" placeholder="শহরের নাম (যেমন: New York, London)">
             <button onclick="getPrayerTimesByCity()">🔍 খুঁজুন</button>
             <button onclick="getPrayerTimesByLocation()" style="background: #4CAF50; color: white;">📍 আমার লোকেশন</button>
         </div>
@@ -76,16 +77,16 @@
     </div>
 
     <script>
-        // আপনার অ্যাপের সাথে মিলানোর জন্য মেথড (১, ২, ৩, ৪, ৫)
+        // আমেরিকার জন্য ISNA (Method 2) সবচেয়ে বেশি ব্যবহৃত হয়
         const METHOD = 2; 
-        const COUNTRY = 'Bangladesh';
 
         // ১. শহরের নাম দিয়ে খোঁজা
         async function getPrayerTimesByCity() {
             const city = document.getElementById('cityInput').value.trim();
             if (!city) { alert('শহরের নাম লিখুন'); return; }
 
-            const url = `https://api.aladhan.com/v1/timingsByCity?city=${encodeURIComponent(city)}&country=${COUNTRY}&method=${METHOD}`;
+            // country প্যারামিটার ছাড়াই সার্চ করা হচ্ছে, যাতে যেকোনো দেশের শহর খোঁজা যায়
+            const url = `https://api.aladhan.com/v1/timingsByCity?city=${encodeURIComponent(city)}&method=${METHOD}`;
             fetchAndRender(url, city);
         }
 
@@ -108,11 +109,10 @@
             );
         }
 
-        // ২৪ ঘণ্টার সময়কে ১২ ঘণ্টায় (AM/PM) রূপান্তর করার ফাংশন
+        // ৩. ২৪ ঘণ্টার সময়কে ১২ ঘণ্টায় (AM/PM) রূপান্তর করার ফাংশন
         function formatTime(time24) {
             if (!time24) return '';
-            
-            // সময়ের সাথে যদি (BDT) বা (EST) লেখা থাকে, তা বাদ দেওয়া
+            // API থেকে যদি টাইমজোনের নাম (যেমন BDT) আসে, তা বাদ দেওয়া
             let cleanTime = time24.split(' ')[0]; 
             
             let [hours, minutes] = cleanTime.split(':');
@@ -166,8 +166,8 @@
             }
         }
 
-        // পেজ লোড হলে ডিফল্ট Dhaka এর সময় দেখানো
-        getPrayerTimesByCity();
+        // পেজ লোড হলে সরাসরি আপনার লোকেশন থেকে সময় বের করার চেষ্টা করবে
+        getPrayerTimesByLocation();
     </script>
 </body>
 </html>
